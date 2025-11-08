@@ -2,7 +2,7 @@
 Tool to download stock return data, to avoid calling yfinance multiple times.
 Reads tickers from files and saves as CSV, or if already exists, returns df
 
-Top 120 S&P500 companies by market cap (2015-01-06 to 2025-11-04),
+Top 120 S&P500 companies by market cap (2015-11-06 to 2025-11-04),
 excluding columns (tickers) and rows (days) with missing or no data
 (e.g. data from no-trading days, null)
 """
@@ -34,15 +34,10 @@ def _check_requested_data_present(existing_df, tickers, start_date, end_date):
     start_month = start_date[:7]
     end_month = end_date[:7]
 
-    if (first_month != start_month) or (last_month != end_month):
-        return False
-
-    return True
+    return (first_month == start_month) and (last_month == end_month)
 
 
-def get_stock_returns(
-    path=CSV_PATH, tickers=TICKERS, start_date=START_DATE, end_date=END_DATE
-):
+def get_stock_returns(path=CSV_PATH, tickers=TICKERS, start_date=START_DATE, end_date=END_DATE):
     """Fetches daily stock return % for given tickers and date rabge (not inclusive)
     either from an existing file or yfinance.
 
@@ -65,9 +60,7 @@ def get_stock_returns(
             return csv_df
 
     print(f"Attempting to download stock return data for {tickers}")
-    data = yf.download(tickers, start=start_date, end=end_date, auto_adjust=True)[
-        "Close"
-    ]
+    data = yf.download(tickers, start=start_date, end=end_date, auto_adjust=True)["Close"]
 
     # Drop empty columns and rows, convert prices to percentage returns
     returns = data.dropna(axis=1).pct_change().dropna()
