@@ -23,7 +23,7 @@ END_DATE = "2025-11-05"
 
 
 def _check_requested_data_present(existing_df, tickers, start_date, end_date):
-    """Check if existing csv (df) matches the requested one"""
+    """Check if existing csv (df) matches the requested one."""
     if not set(tickers).issubset(existing_df.columns):
         return False
 
