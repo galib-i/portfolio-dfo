@@ -57,5 +57,5 @@ class PSO:
         final_portfolio = enforce_constraints(
             best_raw_position, self._dimensions, self._cardinality
         )
-        print(f"Final portfolio after enforcing constraints again: {final_portfolio}")
+        # print(f"Final portfolio after enforcing constraints again: {final_portfolio}")
         return -best_cost, final_portfolio
